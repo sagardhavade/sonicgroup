@@ -6,7 +6,7 @@ export async function GET() {
   });
 }
 
-export async function POST() {
+export async function POST(request: Request, response: Response) {
   return NextResponse.json({
     Hello: "world",
   });

@@ -8,8 +8,6 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import "../../.next/static/css/style.css";
-
 // import required modules
 import { Autoplay, Pagination, Navigation } from "swiper";
 import { sliderData } from "./sliderData";
