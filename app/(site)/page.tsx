@@ -15,8 +15,8 @@ import Testimonial from "@/components/Testimonial";
 import Slider from "@/components/Slider";
 
 export const metadata: Metadata = {
-  title: "Next.js Starter Template for SaaS Startups - Solid SaaS Boilerplate",
-  description: "This is Home for Solid Pro",
+  title: "SonicGroup",
+  description: "sonicgroup | trio | bizpluscrm",
   // other metadata
 };
 
