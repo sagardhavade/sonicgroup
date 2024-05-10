@@ -169,10 +169,10 @@ const Header = () => {
             </Link> */}
 
             <Link
-              href="https://nextjstemplates.com/templates/solid"
+              href="/support"
               className="flex items-center justify-center rounded-full bg-primary px-7.5 py-2.5 text-regular text-white duration-300 ease-in-out hover:bg-primaryho"
             >
-              Get Pro 🔥
+              Enquiry 🌟
             </Link>
           </div>
         </div>

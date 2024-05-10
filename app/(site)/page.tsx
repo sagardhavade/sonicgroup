@@ -25,7 +25,7 @@ export default function Home() {
     <main>
       <Slider />
       <Hero />
-      <Brands />
+      {/* <Brands /> */}
       <Feature />
       {/* <About /> */}
       {/* <FeaturesTab /> */}
@@ -34,7 +34,7 @@ export default function Home() {
       <CTA />
       {/* <FAQ /> */}
       {/* <Testimonial /> */}
-      <Pricing />
+      {/* <Pricing /> */}
       <Contact />
       {/* <Blog /> */}
     </main>

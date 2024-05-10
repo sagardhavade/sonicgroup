@@ -59,9 +59,9 @@ const FunFact = () => {
               Trusted by Global Companies.
             </h2>
             <p className="mx-auto lg:w-11/12">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
+              {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
               convallis tortor eros. Donec vitae tortor lacus. Phasellus aliquam
-              ante in maximus.
+              ante in maximus. */}
             </p>
           </motion.div>
 
@@ -131,9 +131,9 @@ const FunFact = () => {
               className="animate_top text-center"
             >
               <h3 className="mb-2.5 text-3xl font-bold text-black dark:text-white xl:text-sectiontitle3">
-                865
+                865K
               </h3>
-              <p className="text-lg lg:text-para2">Winning Award</p>
+              <p className="text-lg lg:text-para2">No Of Users</p>
             </motion.div>
           </div>
         </div>

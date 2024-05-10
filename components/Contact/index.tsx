@@ -1,19 +1,93 @@
 "use client";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import React from "react";
-
+import React, { FormEvent } from "react";
+import { z } from "zod";
+import { useState } from "react";
+import { contactFormData } from "@/types/contactFormData";
 const Contact = () => {
   /**
    * Source: https://www.joshwcomeau.com/react/the-perils-of-rehydration/
    * Reason: To fix rehydration error
    */
-  const [hasMounted, setHasMounted] = React.useState(false);
-  React.useEffect(() => {
-    setHasMounted(true);
-  }, []);
-  if (!hasMounted) {
-    return null;
+  // const [hasMounted, setHasMounted] = React.useState(false);
+  // React.useEffect(() => {
+  //   setHasMounted(true);
+  // }, []);
+  // if (!hasMounted) {
+  //   return null;
+  // }
+
+  const [formData, setFormData] = useState<contactFormData>({
+    name: "",
+    email: "",
+    subject: "",
+    phone: 0,
+    message: "",
+  });
+  const [errors, setErrors] = useState<contactFormData>(
+    () => ({}) as contactFormData,
+  );
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+
+    // Dynamically validate phone number and show a message
+    if (name === "phone" && value.length !== 10) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: "Please enter a 10-digit phone number",
+      }));
+    } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: undefined,
+      }));
+    }
+  };
+
+  const contactSchema = z.object({
+    name: z.string().min(2).max(50),
+    // phone: z.number().min(10).max(10),
+    subject: z.string().min(1).max(100),
+    message: z.string().min(1).max(100),
+    email: z.string().email(),
+  });
+
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    try {
+      const formData = new FormData(event.currentTarget);
+      const plainFormData = Object.fromEntries(formData.entries());
+      const validateFormData = contactSchema.parse(plainFormData);
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        body: JSON.stringify(validateFormData),
+      });
+
+      if (!response.ok) {
+        // Handle error (e.g., show an error message)
+        console.error("API request failed:", response.status);
+        return;
+      }
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        phone: 0,
+        message: "",
+      });
+      const data = await response.json();
+      // Handle successful response
+      console.log("Received data:", data);
+    } catch (error) {
+      // Handle fetch error (e.g., network issues)
+      console.error("Fetch error:", error);
+    }
   }
 
   return (
@@ -60,20 +134,37 @@ const Contact = () => {
                 Send a message
               </h2>
 
-              <form
-                action="https://formbold.com/s/unique_form_id"
-                method="POST"
-              >
+              <form onSubmit={onSubmit}>
                 <div className="mb-7.5 flex flex-col gap-7.5 lg:flex-row lg:justify-between lg:gap-14">
+                  {/* Display error messages */}
+                  {/* {errors && (
+                    <div>
+                      {errors.name && <p>{errors.name}</p>}
+                      {errors.email && <p>{errors.email}</p>}
+                      {errors.subject && <p>{errors.subject}</p>}
+                      {errors.phone && <p>{errors.phone}</p>}
+                      {errors.message && <p>{errors.message}</p>}
+                    </div>
+                  )} */}
+
+                  {/* Your form fields with onChange event */}
                   <input
                     type="text"
                     placeholder="Full name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
                     className="w-full border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white lg:w-1/2"
                   />
 
                   <input
                     type="email"
                     placeholder="Email address"
+                    name="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
                     className="w-full border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white lg:w-1/2"
                   />
                 </div>
@@ -82,12 +173,20 @@ const Contact = () => {
                   <input
                     type="text"
                     placeholder="Subject"
+                    name="subject"
+                    required
+                    value={formData.subject}
+                    onChange={handleChange}
                     className="w-full border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white lg:w-1/2"
                   />
 
                   <input
                     type="text"
                     placeholder="Phone number"
+                    name="phone"
+                    required
+                    value={formData.phone}
+                    onChange={handleChange}
                     className="w-full border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white lg:w-1/2"
                   />
                 </div>
@@ -96,6 +195,9 @@ const Contact = () => {
                   <textarea
                     placeholder="Message"
                     rows={4}
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
                     className="w-full border-b border-stroke bg-transparent focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white"
                   ></textarea>
                 </div>
@@ -107,7 +209,7 @@ const Contact = () => {
                       type="checkbox"
                       className="peer sr-only"
                     />
-                    <span className="border-gray-300 bg-gray-100 text-blue-600 dark:border-gray-600 dark:bg-gray-700 group mt-2 flex h-5 min-w-[20px] items-center justify-center rounded peer-checked:bg-primary">
+                    <span className="group mt-2 flex h-5 min-w-[20px] items-center justify-center rounded border-gray-300 bg-gray-100 text-blue-600 peer-checked:bg-primary dark:border-gray-600 dark:bg-gray-700">
                       <svg
                         className="opacity-0 peer-checked:group-[]:opacity-100"
                         width="10"
@@ -134,6 +236,7 @@ const Contact = () => {
                   </div>
 
                   <button
+                    type="submit"
                     aria-label="send message"
                     className="inline-flex items-center gap-2.5 rounded-full bg-black px-6 py-3 font-medium text-white duration-300 ease-in-out hover:bg-blackho dark:bg-btndark"
                   >
@@ -182,14 +285,17 @@ const Contact = () => {
                 <h3 className="mb-4 text-metatitle3 font-medium text-black dark:text-white">
                   Our Loaction
                 </h3>
-                <p>290 Maryam Springs 260, Courbevoie, Paris, France</p>
+                <p>
+                  Dhruta Complex, Office 104 & 105, Narayan Peth, Pune,
+                  Maharashtra.
+                </p>
               </div>
               <div className="5 mb-7">
                 <h3 className="mb-4 text-metatitle3 font-medium text-black dark:text-white">
                   Email Address
                 </h3>
                 <p>
-                  <a href="#">yourmail@domainname.com</a>
+                  <a href="#">info@sonicgroup.co.in</a>
                 </p>
               </div>
               <div>
@@ -197,7 +303,7 @@ const Contact = () => {
                   Phone Number
                 </h4>
                 <p>
-                  <a href="#">+009 42334 6343 843</a>
+                  <a href="#">+91 9021 023 456</a>
                 </p>
               </div>
             </motion.div>
@@ -205,6 +311,14 @@ const Contact = () => {
         </div>
       </section>
       {/* <!-- ===== Contact End ===== --> */}
+      {/* <form onSubmit={onSubmit}>
+        <input type="text" name="name" />
+        <input type="text" name="subject" />
+        <input type="email" name="email" />
+        <input type="text" name="phone" />
+        <input type="text" name="message" />
+        <button type="submit">Submit</button>
+      </form> */}
     </>
   );
 };

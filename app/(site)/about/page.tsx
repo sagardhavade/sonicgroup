@@ -15,7 +15,7 @@ const AboutPage = () => {
     <div className="pb-20 pt-40">
       <About />
       <FeaturesTab />
-      <Testimonial />
+      {/* <Testimonial /> */}
     </div>
   );
 };

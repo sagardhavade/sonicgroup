@@ -15,7 +15,7 @@ const SingleSlider = ({ review }: { review: Slider }) => {
         </div>
         <Image
           width={1800}
-          height={500}
+          height={100}
           className=""
           src={image}
           alt={"name"}

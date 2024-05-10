@@ -9,6 +9,8 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "cdn.sanity.io",
+        hostname: "blog.bizpluscrm.com",
+        // hostname: "bizpluscrm.com",
         port: "",
       },
     ],

@@ -299,8 +299,7 @@ const Footer = () => {
               className="animate_top"
             >
               <p>
-                &copy; {new Date().getFullYear()} Sagar Dhavade. All rights
-                reserved
+                &copy; {new Date().getFullYear()} Sagar D. All rights reserved
               </p>
             </motion.div>
 

@@ -32,9 +32,9 @@ const CTA = () => {
                 Join With Us Today & Increase Your Productivity
               </h2>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
+                {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
                 convallis tortor eros. Donec vitae tortor lacus. Phasellus
-                aliquam ante in maximus.
+                aliquam ante in maximus. */}
               </p>
             </motion.div>
             <motion.div
@@ -64,10 +64,10 @@ const CTA = () => {
                   className="hidden xl:block"
                 />
                 <a
-                  href="signup.html"
+                  href="support"
                   className="inline-flex items-center gap-2.5 rounded-full bg-black px-6 py-3 font-medium text-white hover:opacity-90 dark:bg-white dark:text-black"
                 >
-                  Sign up free
+                  Contact us
                   <Image
                     width={20}
                     height={20}
