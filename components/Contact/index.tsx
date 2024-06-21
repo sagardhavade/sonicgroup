@@ -64,7 +64,8 @@ const Contact = () => {
       const formData = new FormData(event.currentTarget);
       const plainFormData = Object.fromEntries(formData.entries());
       const validateFormData = contactSchema.parse(plainFormData);
-      const response = await fetch("/api/contact", {
+      //console.log("log", validateFormData);
+      const response = await fetch("/api/contact/", {
         method: "POST",
         body: JSON.stringify(validateFormData),
       });
